@@ -4,28 +4,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class StatusPanel extends JPanel implements ActionListener {
-    public static final JLabel header = new JLabel("Status");
+    public static final JLabel header = new JLabel("Status",JLabel.CENTER);
 
     private int status=0;
     private JLabel statusLabel;
-    private JButton changeStatus;
+    //private JButton changeStatus;
     public StatusPanel(){
         header.setFont(MainWindow.defaultFont);
         this.setSize(WIDTH,HEIGHT);
-        statusLabel=new JLabel("Off");
+        statusLabel=new JLabel("Off",JLabel.CENTER);
         statusLabel.setFont(MainWindow.defaultFont);
         status=0;
 
-        changeStatus=new JButton("Change Status");
-        changeStatus.setFont(MainWindow.defaultFont);
+        //changeStatus=new JButton("Change Status");
+       // changeStatus.setFont(MainWindow.defaultFont);
         this.setBackground(MainWindow.COMPONENT_COLOR);
         this.setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
 
         this.add(header);
         statusLabel.setVisible(true);
         this.add(statusLabel);
-        this.add(changeStatus);
-        changeStatus.addActionListener(this);
+        //this.add(changeStatus);
+        //changeStatus.addActionListener(this);
     }
     public void setStatus(int status){
         this.status=status;
@@ -55,16 +55,6 @@ public class StatusPanel extends JPanel implements ActionListener {
         return status;
     }
 
-    @Override
-    protected void paintComponent(Graphics g){
-        Dimension size = getSize();
-        int d = Math.min(size.width*2, size.height*2);
-        int x = (size.width - d)/2;
-        int y = (size.height - d);
-        g.setColor(Color.BLUE);
-        g.fillOval(x, y, d, d);
-        g.fillOval(x, y, d, d);
-    }
     @Override
     public void actionPerformed(ActionEvent e) {
 

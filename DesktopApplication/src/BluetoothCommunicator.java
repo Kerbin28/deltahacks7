@@ -15,7 +15,7 @@ public class BluetoothCommunicator {
     public BluetoothCommunicator() {
         int j=0;
         for(SerialPort i:ports){
-            System.out.println(j++ + ". "+i.getSystemPortName());
+            //System.out.println(j++ + ". "+i.getSystemPortName());
         }
         this.port = ports[1];
     }
@@ -40,6 +40,7 @@ public class BluetoothCommunicator {
         port.closePort();
         return null;
     }
+    //
     /*
     public void sendStringToComm(String command) throws Exception {
         port.openPort();

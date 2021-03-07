@@ -9,15 +9,16 @@ public class PeoplePanel extends JPanel implements ActionListener {
     private int safeNumberOfPeople;
     private int numberOfPeopleInside;
     private JLabel safeNumberLabel;
+    private Font font = new  Font("Font",Font.LAYOUT_LEFT_TO_RIGHT,18);
     private JButton changeNumber;
     public PeoplePanel(){
         numberOfPeopleInside=0;
         safeNumberOfPeople=5;
-        numberPeopleLabel = new JLabel("Number of people inside: "+numberOfPeopleInside);
-        safeNumberLabel =new JLabel("Safe number of people: "+safeNumberOfPeople);
+        numberPeopleLabel = new JLabel("Number of people inside: "+numberOfPeopleInside,JLabel.CENTER);
+        safeNumberLabel =new JLabel("Safe number of people: "+safeNumberOfPeople,JLabel.CENTER);
         changeNumber =new JButton("Change safe number of people");
-        numberPeopleLabel.setFont(MainWindow.defaultFont);
-        safeNumberLabel.setFont(MainWindow.defaultFont);
+        numberPeopleLabel.setFont(font);
+        safeNumberLabel.setFont(font);
         changeNumber.setFont(MainWindow.defaultFont);
 
         this.setBackground(MainWindow.COMPONENT_COLOR);
@@ -26,8 +27,8 @@ public class PeoplePanel extends JPanel implements ActionListener {
         this.add(numberPeopleLabel);
         safeNumberLabel.setVisible(true);
         this.add(safeNumberLabel);
-        this.add(changeNumber);
-        changeNumber.addActionListener(this);
+        //this.add(changeNumber);
+        //changeNumber.addActionListener(this);
     }
     public void setSafeNumber(int safeNumber){
         if(safeNumber>=0) {
@@ -40,6 +41,13 @@ public class PeoplePanel extends JPanel implements ActionListener {
             numberOfPeopleInside = number;
         }
         numberPeopleLabel.setText("Number of people inside: "+numberOfPeopleInside);
+        if(numberOfPeopleInside>safeNumberOfPeople){
+            numberPeopleLabel.setForeground(Color.RED);
+        }
+        else{
+            numberPeopleLabel.setForeground(Color.BLACK);
+
+        }
 
     }
     @Override

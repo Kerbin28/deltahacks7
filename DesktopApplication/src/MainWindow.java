@@ -6,16 +6,16 @@ import java.util.*;
 import java.awt.event.*;
 
 public class MainWindow extends JFrame implements ActionListener{
-    public static final int WIDTH = 720;
-    public static final int HEIGHT = 420;
+    public static final int WIDTH = 1020;
+    public static final int HEIGHT = 620;
     public static final int DELAY = 100;
     public static final Font defaultFont = new Font("Font",Font.LAYOUT_LEFT_TO_RIGHT,14);
-    public static final int COMPONENT_WIDTH=MainWindow.WIDTH/100;
+    public static final int COMPONENT_WIDTH=MainWindow.WIDTH/500;
     public static final int COMPONENT_HEIGHT=MainWindow.HEIGHT/20;
     public static final Color BACKGROUND_COLOR = Color.CYAN;
     public static final Color COMPONENT_COLOR = Color.CYAN;
     public static final BluetoothCommunicator bc = new BluetoothCommunicator();
-    public static final JLabel title = new JLabel("Doorhandle Cleaner");
+    public static final JLabel title = new JLabel("Doorhandle Cleaner",JLabel.CENTER);
     private long time;
     private JPanel centerPanel;
     private JPanel contentPanel;
@@ -25,34 +25,45 @@ public class MainWindow extends JFrame implements ActionListener{
     private StatusPanel statusPanel;
     private Timer timer =new Timer(DELAY,this);
     private long lastSprayTime;
-    private JLabel sprayTime;
+    private StartWindow start;
+    private JLabel overflowTime;
+    private JLabel room1;
     public MainWindow(){
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(Exception e){
             e.printStackTrace();
         }
-        time=System.currentTimeMillis();
-        lastSprayTime=0;
-        sprayTime=new JLabel("Last spray time: "+lastSprayTime);
-        sprayTime.setFont(defaultFont);
-        timer.start();
         this.setSize(WIDTH,HEIGHT);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
+
+        start = new StartWindow(this);
+        this.add(start);
+        this.setVisible(true);
+
+    }
+    public void setMainUI(){
+        remove(start);
+        room1 = new JLabel("First Floor of Meeting Room");
+        room1.setFont(defaultFont);
+        time=System.currentTimeMillis();
+        overflowTime =new JLabel("Last time overcrowded: "+0+" minutes",JLabel.CENTER);
+        overflowTime.setFont(defaultFont);
+        timer.start();
 
         padding=new JPanel();
         timerPanel=new JPanel();
         timerPanel.setBorder(new EmptyBorder((int) (COMPONENT_HEIGHT*1.83),COMPONENT_WIDTH, (int) (COMPONENT_HEIGHT*1.83),COMPONENT_WIDTH));
         timerPanel.setVisible(true);
         padding.setBackground(BACKGROUND_COLOR);
-        padding.setBorder(new EmptyBorder(50,50,50,50));
+        padding.setBorder(new EmptyBorder(60,50,50,50));
 
         contentPanel = new JPanel();
         centerPanel=new JPanel();
         centerPanel.setBackground(BACKGROUND_COLOR);
-        centerPanel.setLayout(new BorderLayout());
-
+        centerPanel.setLayout(new GridLayout());
+        contentPanel.add(room1);
         statusPanel=new StatusPanel();
         statusPanel.setBorder(new EmptyBorder(COMPONENT_HEIGHT,COMPONENT_WIDTH,COMPONENT_HEIGHT,COMPONENT_WIDTH));
 
@@ -63,7 +74,7 @@ public class MainWindow extends JFrame implements ActionListener{
 
         contentPanel.add(peoplePanel);
 
-        timerPanel.add(sprayTime);
+        timerPanel.add(overflowTime);
         timerPanel.setBackground(COMPONENT_COLOR);
         contentPanel.add(timerPanel);
         this.add(padding,BorderLayout.SOUTH);
@@ -79,11 +90,9 @@ public class MainWindow extends JFrame implements ActionListener{
         this.getContentPane().setBackground(BACKGROUND_COLOR);
         this.setVisible(true);
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==timer){
-            sprayTime.setText("Last spray time: "+(System.currentTimeMillis()-time)/1000 +"s");
             String input=bc.readLine();
             StringTokenizer st=null;
             try {
@@ -104,14 +113,17 @@ public class MainWindow extends JFrame implements ActionListener{
             }
             try {
                 statusPanel.setStatus(statusList.get(0));
-                peoplePanel.setNumberOfPeopleInside(statusList.get(1));
                 peoplePanel.setSafeNumber(statusList.get(2));
+                peoplePanel.setNumberOfPeopleInside(statusList.get(1));
+
             }
             catch(Exception E){
 
             }
-            if(statusPanel.getStatus()==2){
+            if(statusPanel.getStatus()==4){
+                overflowTime.setText("Last time overcrowded: "+((System.currentTimeMillis()-time)/1000)%60 +"minutes");
                 time=System.currentTimeMillis();
+
             }
 
         }
