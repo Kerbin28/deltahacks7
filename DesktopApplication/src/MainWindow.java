@@ -28,6 +28,7 @@ public class MainWindow extends JFrame implements ActionListener{
     private StartWindow start;
     private JLabel overflowTime;
     private JLabel room1;
+    private ArrayList<JLabel> labels = new ArrayList<>();
     public MainWindow(){
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -43,7 +44,15 @@ public class MainWindow extends JFrame implements ActionListener{
         this.setVisible(true);
 
     }
+    public void setPlaceholder(){
+        for(int i=0;i<6;i++){
+            labels.add(new JLabel("N/A"));
+
+            labels.get(i).setFont(defaultFont);
+        }
+    }
     public void setMainUI(){
+        setPlaceholder();
         remove(start);
         room1 = new JLabel("First Floor of Meeting Room");
         room1.setFont(defaultFont);
@@ -78,9 +87,32 @@ public class MainWindow extends JFrame implements ActionListener{
         timerPanel.setBackground(COMPONENT_COLOR);
         contentPanel.add(timerPanel);
         this.add(padding,BorderLayout.SOUTH);
+        JLabel room2 = new JLabel("Server Room");
+        room2.setFont(defaultFont);
+        JLabel room3 = new JLabel("HR Office");
+        room3.setFont(defaultFont);
 
         this.add(centerPanel,BorderLayout.CENTER);
         centerPanel.add(contentPanel,BorderLayout.SOUTH);
+        JPanel row2=new JPanel();
+        JPanel row3=new JPanel();
+        row2.setLayout(new FlowLayout(FlowLayout.TRAILING,0,0));
+        row3.setLayout(new FlowLayout());
+        ((FlowLayout)row2.getLayout()).setHgap(150);
+        ((FlowLayout)row2.getLayout()).setVgap(50);
+        ((FlowLayout)row3.getLayout()).setHgap(150);
+        ((FlowLayout)row3.getLayout()).setVgap(50);
+        row2.add(room2);
+        row3.add(room3);
+        row2.setBackground(BACKGROUND_COLOR);
+        row3.setBackground(BACKGROUND_COLOR);
+        for(int i=0;i<3;i++){
+            row2.add(labels.get(i));
+            row3.add(labels.get(i+3));
+        }
+        centerPanel.add(row2);
+        centerPanel.add(row3);
+
         contentPanel.setBackground(BACKGROUND_COLOR);
         ((FlowLayout)(contentPanel.getLayout())).setHgap(50);
         centerPanel.setVisible(true);

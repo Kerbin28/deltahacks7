@@ -12,7 +12,7 @@ public class StatusPanel extends JPanel implements ActionListener {
     public StatusPanel(){
         header.setFont(MainWindow.defaultFont);
         this.setSize(WIDTH,HEIGHT);
-        statusLabel=new JLabel("Off",JLabel.CENTER);
+        statusLabel=new JLabel("Powered Down",JLabel.CENTER);
         statusLabel.setFont(MainWindow.defaultFont);
         status=0;
 
@@ -31,10 +31,10 @@ public class StatusPanel extends JPanel implements ActionListener {
         this.status=status;
         switch(status){
             case 0:
-                statusLabel.setText("Off");
+                statusLabel.setText("Powered Down");
                 break;
             case 1:
-                statusLabel.setText("Ready");
+                statusLabel.setText("Ready               ");
                 break;
             case 2:
                 statusLabel.setText("Disinfecting");
@@ -43,10 +43,10 @@ public class StatusPanel extends JPanel implements ActionListener {
                 statusLabel.setText("Refill Required");
                 break;
             case 4:
-                statusLabel.setText("Overflow");
+                statusLabel.setText("Overflow\n");
                 break;
             default:
-                statusLabel.setText("Error");
+                statusLabel.setText("Error      ");
                 status=-1;
                 break;
         }
