@@ -42,6 +42,7 @@ void setup () {
   delay(500);
   lcd.clear();
   PrintLCD(1);
+  SendState(1);
 }
 
 void loop () {
@@ -60,12 +61,13 @@ void loop () {
     if(refill == 0)
     {
       PrintLCD(2);
+      SendState(2);
       count++;
       delay(1300);
       Disinfect();
     }
     isOpen = false;
-    if ((abs(initial_dist-final_dist)>5)  //The logic behind this is that if the door is closed, and we check that there is someone on the outside,
+    if ((abs(initial_dist-final_dist)>5))  //The logic behind this is that if the door is closed, and we check that there is someone on the outside,
     {                                           //that means the person is leaving, otherwise the person is entering
       PersonCount = (PersonCount>0)?(PersonCount-1):0;
       //To prevent the Person count from going below zero
@@ -76,17 +78,20 @@ void loop () {
     }
     if (PersonCount > MAX_PEOPLE)
     {
+      SendState(4);
       PrintLCD(4); 
     }
     else
     {
       PrintLCD(1);
+      SendState(1);
     }
   }
   if (count == MAXCOUNT){
     digitalWrite(ledpurple, HIGH);
     refill = 1;
     PrintLCD(3);
+    SendState(3);
   }
 
   if(refill == 1 && digitalRead(button) == HIGH)
@@ -96,12 +101,8 @@ void loop () {
     refill = 0;
     digitalWrite(ledpurple, LOW);
     PrintLCD(1);
+    SendState(1);
   }
-
-  Serial.println (sensorValue, DEC); //prints output values from sensor
-  
-
-  Serial.println(sensorValue); 
   delay (100);
 }
 
@@ -114,13 +115,13 @@ void Disinfect()
     digitalWrite (ledPin, LOW);
 }
 
-void PrintLCD(int status)
+void PrintLCD(int state)
 {
   lcd.clear();
   lcd.print("People Count:");
   lcd.println(PersonCount);
   lcd.print("State:");
-  switch(status)
+  switch(state)
   {
     case 0:
     lcd.println("OFF");
@@ -140,4 +141,14 @@ void PrintLCD(int status)
     default:
     lcd.println("ERROR");
   }
+}
+
+void SendState(int state)
+{
+  Serial.print(state);
+  Serial.print(" ");
+  Serial.print(PersonCount);
+  Serial.print(" ");
+  Serial.print(MAX_PEOPLE);
+  Serial.println(" ");
 }
