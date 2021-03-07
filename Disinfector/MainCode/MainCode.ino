@@ -3,7 +3,7 @@
 #include <NewPing.h>
 #include <Wire.h>
 
-LiquidCrystal_I2C lcd(0x3F, 16, 2);
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 const int sensorPin = A0;    // select the analog input pin
 const int ledPin = 3;       // select the pin for the output
 const int ledpurple = 5; //refill indicator led pin
