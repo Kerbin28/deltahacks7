@@ -10,7 +10,7 @@ int ledPin = 3;       // select the pin for the output
 int sensorValue;   // variable to store the value coming from the sensor
 int ledpurple = 5;
 int button = 6;
-const int MAXCOUNT = 50;
+const int MAXCOUNT = 5;
 int Motorpin = 2;
 int spraypin = 7;
 const int ECHO_PIN = 11;
@@ -58,9 +58,9 @@ int PersonCount = 0;
   }
   else if(isOpen&&sensorValue<50) //Detect if the door got closed
   {
-    delay(1000);
+    delay(500);
     int initial_dist = sonar.ping_cm();   //find the initial distance after the door is closed
-    delay(1000);
+    delay(100);
     int final_dist = sonar.ping_cm();     //find the final distance after the door is closed
     if(refill == 0)
     {
@@ -114,7 +114,7 @@ void Disinfect()
 {
     digitalWrite(ledPin, HIGH); 
     digitalWrite(spraypin,HIGH); 
-    delay(2000);
+    delay(5000);
     digitalWrite(Motorpin,HIGH);
     digitalWrite (spraypin, LOW);
     delay(2000);
